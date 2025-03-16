@@ -4,7 +4,7 @@
 {
     'name': 'Cuenta FacturaTool',
     'summary': 'Administracion de cuenta FacturaTool',
-    'version': '17.0.1.0.1',
+    'version': '18.0.1.0.1',
     'category': 'Invoicing Management',
     'author': 'VeHoSoft',
     'website': 'http://www.vehosoft.com',

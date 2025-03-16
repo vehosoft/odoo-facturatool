@@ -16,6 +16,57 @@ try:
 except ImportError:  # pragma: no cover
     _logger.debug('Cannot import zeep')
 
+class AccountMoveSend(models.AbstractModel):
+    _inherit = 'account.move.send'
+
+    @api.model
+    def _get_default_mail_attachments_widget(self, move, mail_template, extra_edis=None, pdf_report=None):
+        attachments = super()._get_default_mail_attachments_widget(move, mail_template, extra_edis, pdf_report)
+        _logger.debug("_get_default_mail_attachments_widget attachments = %r",attachments)
+        return attachments
+    @api.model
+    def _get_placeholder_mail_attachments_data(self, move, extra_edis=None):
+        attachments = super()._get_placeholder_mail_attachments_data(move, extra_edis)
+        if move.cfdi_state != 'draft':
+            filename = move._get_invoice_report_filename(extension='xml')
+            attachments.append({
+                'id': f'placeholder_{filename}',
+                'name': filename,
+                'mimetype': 'application/xml',
+                'placeholder': True,
+            })
+        return attachments
+    
+    @api.model
+    def _link_invoice_documents(self, invoices_data):
+        for invoice, invoice_data in invoices_data.items():
+            _logger.debug("_link_invoice_documents invoice = %r",invoice)
+            #Si la factura esta timbrada.
+            if invoice.cfdi_state != 'draft':
+                for index_a, mail_attachment in enumerate(invoice_data['mail_attachments_widget']):
+                    _logger.debug("_link_invoice_documents mail_attachment = %r",mail_attachment)
+                    mail_attachment_id = str(mail_attachment['id'])
+                    #si el adjunto es xml
+                    if mail_attachment_id.startswith("placeholder_") and mail_attachment_id.endswith(".xml"):
+                        _logger.debug("_link_invoice_documents mail_attachment_id = %r",mail_attachment_id)
+                        filename = invoice._get_invoice_report_filename(extension='xml')
+                        attachment_exist = self.env['ir.attachment'].search([('name','=',filename),('res_model','=',invoice._name),('res_id','=',invoice.id)])
+                        #Si no existe el attachment se crea
+                        if len(attachment_exist) == 0:
+                            attachment_rec = self.env['ir.attachment'].create({
+                                'name': filename,
+                                'raw': invoice.cfdi_xml.encode('utf8'),
+                                'mimetype': 'application/xml',
+                                'res_model': invoice._name,
+                                'res_id': invoice.id,
+                                #'res_field': 'invoice_pdf_report_file',  # Binary field
+                            })
+                        else:
+                            attachment_rec = attachment_exist[0]
+                        invoices_data[invoice]['mail_attachments_widget'][index_a]['id'] = attachment_rec.id
+        super()._link_invoice_documents(invoices_data)
+
+
 class AccountTax(models.Model):
     _inherit = 'account.tax'
 
@@ -72,6 +123,18 @@ class AccountMove(models.Model):
     cfdi_cadena_original = fields.Char(string='Cadena Original', size=600, copy=False)
     cfdi_cp = fields.Char(string='Domicilio Fiscal', size=10, copy=False)
     cfdi_version = fields.Char(string='Version CFDI', size=5, copy=False, default='4.0')
+
+    def _get_invoice_report_filename(self, extension='pdf'):
+        if self.cfdi_state != 'draft':
+            return self.company_id.vat+'_'+self.cfdi_serie.name.upper()+self.cfdi_folio+'.'+extension
+        else:
+            return super()._get_invoice_report_filename(extension)
+
+    def _get_report_base_filename(self):
+        if self.cfdi_state != 'draft':
+            return self.company_id.vat+'_'+self.cfdi_serie.name.upper()+self.cfdi_folio
+        else:
+            return super()._get_report_base_filename()
 
     def _cfdi_hora_str(self):
         for record in self:

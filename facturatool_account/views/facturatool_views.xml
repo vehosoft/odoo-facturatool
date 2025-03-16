@@ -30,11 +30,11 @@
             <field name="name">facturatool.account.tree</field>
             <field name="model">facturatool.account</field>
             <field name="arch" type="xml">
-                <tree string="Cuenta FacturaTool">
+                <list string="Cuenta FacturaTool">
                     <field name="rfc"/>
                     <field name="validate"/>
                     <field name="company_id"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -53,7 +53,7 @@
             <field name="name">Cuenta FacturaTool</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">facturatool.account</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="view_id" ref="view_facturatool_account_tree"/>
             <field name="search_view_id" ref="view_facturatool_account_search" />
         </record>
@@ -65,6 +65,7 @@
             sequence="1"
             action="action_facturatool_account"
             groups="account.group_account_manager"/>
+        
         
         
         <record id="view_facturatool_serie_form" model="ir.ui.view">
@@ -88,13 +89,13 @@
             <field name="name">facturatool.serie.tree</field>
             <field name="model">facturatool.serie</field>
             <field name="arch" type="xml">
-                <tree string="Series">
+                <list string="Series">
                     <field name="name"/>
                     <field name="factura"/>
                     <field name="pago"/>
                     <field name="nomina"/>
                     <field name="company_id"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -115,7 +116,7 @@
             <field name="name">Series</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">facturatool.serie</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="view_id" ref="view_facturatool_serie_tree"/>
             <field name="search_view_id" ref="view_facturatool_serie_search" />
         </record>
@@ -132,10 +133,10 @@
             <field name="name">sat.cfdi.uso.tree</field>
             <field name="model">sat.cfdi.uso</field>
             <field name="arch" type="xml">
-                <tree string="Usos del CFDI">
+                <list string="Usos del CFDI">
                     <field name="code"/>
                     <field name="name"/>
-                </tree>
+                </list>
             </field>
         </record>
         

@@ -12,7 +12,7 @@ class AccountInvoiceReport(models.Model):
     date = fields.Date(readonly=True, string="Fecha contable")
     ref = fields.Char(readonly=True, string="Referencia")
 
-    @api.model
-    def _select(self):
-        resp = super(AccountInvoiceReport,self)._select()
-        return resp+', move.date, move.ref'
+    #@api.model
+    #def _select(self):
+    #    resp = super(AccountInvoiceReport,self)._select()
+    #    return resp+', move.date, move.ref'

@@ -84,11 +84,11 @@
 									<field name="cfdi_forma_pago" readonly="cfdi_state != 'draft'" invisible="move_type != 'out_invoice' or cfdi_state == 'draft'"/>
 									<field name="cfdi_uuid" readonly="move_type == 'out_invoice'" invisible="move_type != 'out_invoice' or cfdi_state == 'draft'"/>
 								</field>
-								<xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="after">
+								<xpath expr="//field[@name='invoice_line_ids']/list/field[@name='name']" position="after">
 										<field name="clave_sat"/>
 										<field name="number_ident"/>
 								</xpath>
-								<xpath expr="//field[@name='line_ids']/tree/field[@name='name']" position="after">
+								<xpath expr="//field[@name='line_ids']/list/field[@name='name']" position="after">
 										<field name="clave_sat"/>
 										<field name="number_ident"/>
 								</xpath>

@@ -4,7 +4,7 @@
 {
 	'name': 'Facturación Electrónica Proveedores - FacturaTool',
 	'summary': 'Facturación Electrónica Proveedores - FacturaTool',
-	'version': '17.0.1.0.1',
+	'version': '18.0.1.0.1',
 	'category': 'Invoicing Management',
 	'sequence': 50,
 	'author': 'VeHoSoft',
