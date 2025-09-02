@@ -39,7 +39,9 @@
 						</div>
 					</xpath>
 					
-					<xpath expr="//div[@t-attf-class=&quot;footer o_company_#{company.id}_layout {{report_type != 'pdf' and 'mt-auto'}}&quot;]" position="replace">
+					<!--<xpath expr="//div[@t-attf-class=&quot;footer o_company_#{company.id}_layout {{report_type != 'pdf' and 'mt-auto'}}&quot;]" position="replace">-->
+					<!--
+					<xpath expr="//div[3]" position="replace">
 						<div t-attf-class="footer o_company_#{company.id}_layout {{report_type != 'pdf' and 'mt-auto'}}">
 							<div class="o_footer_content row border-top pt-2">
 								<div class="col-10">
@@ -61,7 +63,7 @@
 							</div>
 						</div>
 					</xpath>
-					
+					-->
 
 			</template>
 
