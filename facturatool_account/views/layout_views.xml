@@ -2,8 +2,8 @@
 <odoo>
 		<data>
 			<template id="external_layout_striped" inherit_id="web.external_layout_striped">
-				<xpath expr="//div[@t-attf-class='o_company_#{company.id}_layout header']/div[@class='d-flex']/div[@class='ms-3']" position="replace">
-					<div class="ms-3" name="company_address">
+				<xpath expr="//div[@t-attf-class='o_company_#{company.id}_layout header']/div[@class='d-flex']/div[hasclass('ms-3')]" position="replace">
+					<div class=" w-50 ms-3" name="company_address">
 						<div t-field="company.name" style="font-size: 18px; font-weight: bold;"/>
 						<div style="font-size: 18px;">RFC: <span t-field="company.vat"/></div>
 						<div style="font-size: 15px;"  t-if="company.street or company.street2">
