@@ -104,16 +104,16 @@ class AccountMove(models.Model):
     cfdi_trans_id = fields.Char(string='FacturaTool TransID', size=30, copy=False)
     cfdi_regimen = fields.Many2one('sat.regimen.fiscal', string="Régimen Fiscal", copy=False)
     cfdi_uso = fields.Many2one('sat.cfdi.uso', string="Uso del CFDI", copy=False)
-    cfdi_state = fields.Selection([('draft', 'Sin Timbrar'), ('done', 'Trimbrado'), ('cancel', 'Cancelado'), ('canceling', 'Cancelando')], string='Status del CFDI', default='draft', copy=False, track_visibility='onchange')
+    cfdi_state = fields.Selection([('draft', 'Sin Timbrar'), ('done', 'Trimbrado'), ('cancel', 'Cancelado'), ('canceling', 'Cancelando')], string='Status del CFDI', default='draft', copy=False, tracking=True)
     cfdi_fecha = fields.Date(string='Fecha Emision CFDI', readonly=True, index=True, copy=False)
     cfdi_hora = fields.Float('Hora Emision CFDI')
     cfdi_hora_str = fields.Char('Hora de Emision Texto',compute='_cfdi_hora_str')
     cfdi_serie = fields.Many2one('facturatool.serie', string="Serie")
-    cfdi_folio = fields.Char(string='Folio', size=30, copy=False, track_visibility='onchange')
-    cfdi_uuid = fields.Char(string='UUID', size=120, copy=False, track_visibility='onchange')
+    cfdi_folio = fields.Char(string='Folio', size=30, copy=False, tracking=True)
+    cfdi_uuid = fields.Char(string='UUID', size=120, copy=False, tracking=True)
     cfdi_metodo_pago = fields.Selection([('PUE', 'Pago en una sola exhibicion'), ('PPD', 'Pago en parcialidades o diferido')], string='Metodo de Pago')
     cfdi_forma_pago = fields.Many2one('sat.forma.pago', string="Forma de Pago")
-    cfdi_fecha_timbrado = fields.Datetime(string='Fecha de timbrado', copy=False, track_visibility='onchange')
+    cfdi_fecha_timbrado = fields.Datetime(string='Fecha de timbrado', copy=False, tracking=True)
     cfdi_xml = fields.Text('XML', copy=False)
     cfdi_acuse_emision = fields.Text('Acuse de Emision', copy=False)
     cfdi_serie_csd = fields.Char(string='Serie CSD', size=600, copy=False)
@@ -131,7 +131,7 @@ class AccountMove(models.Model):
             return super()._get_invoice_report_filename(extension)
 
     def _get_report_base_filename(self):
-        if self.cfdi_state != 'draft':
+        if self.move_type == 'out_invoice' and self.cfdi_state != 'draft':
             return self.company_id.vat+'_'+self.cfdi_serie.name.upper()+self.cfdi_folio
         else:
             return super()._get_report_base_filename()
