@@ -23,9 +23,14 @@ class AccountJournal(models.Model):
         if not attachments:
             raise UserError(_("No attachment was provided"))
         for attachment in attachments:
+            _logger.debug('===== _create_document_from_attachment attachment.name = %r',attachment.name)
+            _logger.debug('===== _create_document_from_attachment attachment.mimetype = %r',attachment.mimetype)
             if attachment.mimetype == 'text/xml':
                 pdf_names.append(attachment.name.replace('.xml','.pdf'))
+        _logger.debug('===== _create_document_from_attachment pdf_names = %r',pdf_names)
         for attachment in attachments:
+            _logger.debug('===== _create_document_from_attachment attachment.name = %r',attachment.name)
+            _logger.debug('===== _create_document_from_attachment attachment.mimetype = %r',attachment.mimetype)
             if attachment.name in pdf_names and attachment.mimetype == 'application/pdf':
                 pdf_attachments.append(attachment)
             else:
@@ -33,6 +38,7 @@ class AccountJournal(models.Model):
                 new_attachment_ids.append(attachment.id)
         ###
         invoices = super(AccountJournal, self)._create_document_from_attachment(new_attachment_ids)
+        _logger.debug('===== _create_document_from_attachment invoices = %r',invoices)
         ###
         #Se adjuntan los documentos PDF a las facturas donde coincide con el adjunto XML
         for attachment_pdf in pdf_attachments:
