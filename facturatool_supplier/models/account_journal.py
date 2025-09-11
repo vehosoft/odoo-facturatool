@@ -34,7 +34,7 @@ class AccountJournal(models.Model):
         for attachment in attachments:
             _logger.debug('===== _create_document_from_attachment attachment.name = %r',attachment.name)
             _logger.debug('===== _create_document_from_attachment attachment.mimetype = %r',attachment.mimetype)
-            if self.is_xml_attach(self, attachment.name, attachment.mimetype):
+            if self.is_xml_attach(attachment.name, attachment.mimetype):
                 pdf_names.append(attachment.name.replace('.xml','.pdf'))
         _logger.debug('===== _create_document_from_attachment pdf_names = %r',pdf_names)
         for attachment in attachments:
@@ -60,7 +60,7 @@ class AccountJournal(models.Model):
         ##
         #Se obtiene la informacion de adjuntos xml
         for attachment in new_attachments:
-            if self.is_xml_attach(self, attachment.name, attachment.mimetype) and attachment.res_model == 'account.move' and attachment.res_id != False:
+            if self.is_xml_attach(attachment.name, attachment.mimetype) and attachment.res_model == 'account.move' and attachment.res_id != False:
                 invoice = self.env['account.move'].browse(int(attachment.res_id))
                 cfdi_data = invoice.get_cfdi_data( base64.b64decode(attachment.datas))
                 _logger.debug('===== _create_document_from_attachment cfdi_data = %r',cfdi_data)
