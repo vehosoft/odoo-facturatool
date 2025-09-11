@@ -12,6 +12,15 @@ _logger = logging.getLogger(__name__)
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
+    def is_xml_attach(self, name, mimetype):
+        if mimetype == 'text/xml':
+            return True
+        elif mimetype == 'text/plain' and name.endswith(".xml"):
+            return True
+        else:
+            return False
+        
+
     def _create_document_from_attachment(self, attachment_ids=None):
         _logger.debug('===== _create_document_from_attachment attachment_ids = %r',attachment_ids)
         ###
@@ -25,7 +34,7 @@ class AccountJournal(models.Model):
         for attachment in attachments:
             _logger.debug('===== _create_document_from_attachment attachment.name = %r',attachment.name)
             _logger.debug('===== _create_document_from_attachment attachment.mimetype = %r',attachment.mimetype)
-            if attachment.mimetype == 'text/xml':
+            if self.is_xml_attach(self, attachment.name, attachment.mimetype):
                 pdf_names.append(attachment.name.replace('.xml','.pdf'))
         _logger.debug('===== _create_document_from_attachment pdf_names = %r',pdf_names)
         for attachment in attachments:
@@ -51,7 +60,7 @@ class AccountJournal(models.Model):
         ##
         #Se obtiene la informacion de adjuntos xml
         for attachment in new_attachments:
-            if attachment.mimetype == 'text/xml' and attachment.res_model == 'account.move' and attachment.res_id != False:
+            if self.is_xml_attach(self, attachment.name, attachment.mimetype) and attachment.res_model == 'account.move' and attachment.res_id != False:
                 invoice = self.env['account.move'].browse(int(attachment.res_id))
                 cfdi_data = invoice.get_cfdi_data( base64.b64decode(attachment.datas))
                 _logger.debug('===== _create_document_from_attachment cfdi_data = %r',cfdi_data)
