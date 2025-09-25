@@ -27,12 +27,17 @@
 						<field name="inherit_id" ref="account.view_invoice_tree" />
 						<field name="arch" type="xml">
 								<field name="amount_residual_signed" position="replace">
-									<field name="amount_residual_signed" string="Amount Due" sum="Amount Due" optional="show"/>
+									<field name="amount_residual_signed" string="Importe pendiente" sum="Total adeudado" optional="show"/>
 								</field>
 								<field name="invoice_date_due" position="after">
+									<!--
 									<field name="cfdi_state" widget="badge" decoration-success="cfdi_state == 'done'" decoration-danger="cfdi_state == 'cancel'" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
 									<field name="cfdi_serie" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
 									<field name="cfdi_folio" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
+									-->
+									<field name="cfdi_state" widget="badge" decoration-success="cfdi_state == 'done'" decoration-danger="cfdi_state == 'cancel'"/>
+									<field name="cfdi_serie"/>
+									<field name="cfdi_folio"/>
 								</field>
 						</field>
 				</record>

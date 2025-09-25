@@ -2,7 +2,7 @@
 <odoo>
 		<data>
 
-				<record model="ir.ui.view" id="view_invoice_out_cfdi_tree">
+				<!--<record model="ir.ui.view" id="view_invoice_out_cfdi_tree">
 						<field name="name">account.invoice.out.cfdi.tree</field>
 						<field name="model">account.move</field>
 						<field name="inherit_id" ref="account.view_invoice_tree" />
@@ -12,7 +12,7 @@
 									<field name="cfdi_folio" invisible="context.get('default_move_type') not in ('in_invoice', 'out_refund','out_receipt')"/>
 								</field>
 						</field>
-				</record>
+				</record>-->
 
 				
 				<record model="ir.ui.view" id="view_account_invoice_out_cfdi_form">
