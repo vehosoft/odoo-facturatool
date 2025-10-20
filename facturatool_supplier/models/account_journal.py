@@ -57,6 +57,11 @@ class AccountJournal(models.Model):
                     invoice = self.env['account.move'].browse(int(attachment.res_id))
                     invoice.with_context(no_new_invoice=True).message_post(attachment_ids=[attachment_pdf.id])
                     attachment_pdf.write({'res_model': 'account.move', 'res_id': invoice.id})
+                    #Garantiza que el PDF sea el documento principal de la factura
+                    _logger.debug('===== _create_document_from_attachment invoice.message_main_attachment_id.id = %r',invoice.message_main_attachment_id.id)
+                    _logger.debug('===== _create_document_from_attachment attachment_pdf.id = %r',attachment_pdf.id)
+                    if invoice.message_main_attachment_id.id != attachment_pdf.id:
+                        invoice.write({'message_main_attachment_id':attachment_pdf.id})
         ##
         #Se obtiene la informacion de adjuntos xml
         for attachment in new_attachments:
